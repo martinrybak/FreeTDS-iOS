@@ -5,7 +5,7 @@ SDKVERSION="6.1"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
-ARCHS="i386 armv7"
+ARCHS="i386 armv7 armv7s"
 CURRENTPATH=`pwd`
 BUILD="x86_64-apple-darwin11"
 OLD_PATH=$PATH
@@ -55,7 +55,7 @@ cp -r ${CURRENTPATH}/build/${LIB}/i386/ ${CURRENTPATH}/build/${LIB}/Fat
 rm -rf ${CURRENTPATH}/build/${LIB}/Fat/lib/*
 
 echo "Build library - freetds.a"
-lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
+lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7s/lib/libsybdb.a -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
 
 
 echo "======== CHECK FAT ARCH ========"
