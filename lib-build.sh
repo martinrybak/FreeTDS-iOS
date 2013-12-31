@@ -1,7 +1,7 @@
 #!/bin/sh
 
 VERSION="0.91"
-SDKVERSION="6.1"
+SDKVERSION="7.0"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
