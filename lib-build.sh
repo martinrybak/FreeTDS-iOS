@@ -5,7 +5,7 @@ SDKVERSION="7.0"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
-ARCHS="i386 armv7 armv7s arm64"
+ARCHS="i386 armv7 armv7s arm64 x86_64"
 CURRENTPATH=`pwd`
 BUILD="x86_64-apple-darwin11"
 HOST="arm-apple-darwin"
@@ -24,26 +24,25 @@ do
     fi
 
     SDK="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk"
-
-    export CC="clang"
-    export CFLAGS="-arch ${ARCH} -isysroot ${SDK}"
-    export CXXFLAGS="$CFLAGS"
-    export LDFLAGS="$CFLAGS"
-    export LD=$CC
-    
-
+    CFLAGS="-arch ${ARCH} -miphoneos-version-min=${SDKVERSION} -isysroot ${SDK}"
     PREFIX="${CURRENTPATH}/build/${LIB}/${ARCH}"
 
     mkdir -p ${PREFIX}
 
     echo "Please stand by..."
 
-    ./configure --prefix=$PREFIX --host=${HOST} -build=${BUILD} -with-tdsver=${TDS_VER}
+    if [ "${ARCH}" == "x86_64" ];
+    then
+        ./configure --prefix=$PREFIX -build=${BUILD} -with-tdsver=${TDS_VER}
+    else
+        ./configure --prefix=$PREFIX --host=${HOST} -build=${BUILD} -with-tdsver=${TDS_VER} CFLAGS="${CFLAGS}"
+    fi
+
     make clean
     make && make install
 
     echo "======== CHECK ARCH ========"
-    lipo -info ${PREFIX}/lib/libsybdb.a
+    xcrun -sdk iphoneos lipo -info ${PREFIX}/lib/libsybdb.a
     echo "======== CHECK DONE ========"
 
 done
@@ -54,7 +53,7 @@ cp -r ${CURRENTPATH}/build/${LIB}/i386/ ${CURRENTPATH}/build/${LIB}/Fat
 rm -rf ${CURRENTPATH}/build/${LIB}/Fat/lib/*
 
 echo "Build library - freetds.a"
-lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7s/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/arm64/lib/libsybdb.a  -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
+lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7s/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/arm64/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/x86_64/lib/libsybdb.a  -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
 
 
 echo "======== CHECK FAT ARCH ========"
