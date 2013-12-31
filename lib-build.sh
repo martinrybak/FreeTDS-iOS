@@ -58,7 +58,7 @@ lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/bui
 
 
 echo "======== CHECK FAT ARCH ========"
-lipo -info ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
+xcrun -sdk iphoneos lipo -info ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
 echo "======== CHECK DONE ========"
 
 echo "== Done =="
