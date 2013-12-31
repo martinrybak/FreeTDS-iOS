@@ -5,9 +5,10 @@ SDKVERSION="6.1"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
-ARCHS="i386 armv7 armv7s"
+ARCHS="i386 armv7 armv7s arm64"
 CURRENTPATH=`pwd`
 BUILD="x86_64-apple-darwin11"
+HOST="arm-apple-darwin"
 OLD_PATH=$PATH
 TDS_VER=7.1
 
@@ -18,10 +19,8 @@ do
     if [ "${ARCH}" == "i386" ];
     then
         PLATFORM="iPhoneSimulator"
-        HOST="i386-apple-darwin11"
     else
         PLATFORM="iPhoneOS"
-        HOST="${ARCH}-apple-darwin11"
     fi
 
     SDK="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk"
@@ -55,7 +54,7 @@ cp -r ${CURRENTPATH}/build/${LIB}/i386/ ${CURRENTPATH}/build/${LIB}/Fat
 rm -rf ${CURRENTPATH}/build/${LIB}/Fat/lib/*
 
 echo "Build library - freetds.a"
-lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7s/lib/libsybdb.a -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
+lipo -create ${CURRENTPATH}/build/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/armv7s/lib/libsybdb.a  ${CURRENTPATH}/build/${LIB}/arm64/lib/libsybdb.a  -output ${CURRENTPATH}/build/${LIB}/Fat/lib/libsybdb.a
 
 
 echo "======== CHECK FAT ARCH ========"
