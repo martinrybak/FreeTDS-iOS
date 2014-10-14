@@ -1,7 +1,8 @@
 #!/bin/sh
 
 VERSION="0.91"
-SDKVERSION="7.0"
+SDKVERSION="8.0"
+TARGETSDKVERSION="7.1"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
@@ -24,7 +25,7 @@ do
     fi
 
     SDK="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk"
-    CFLAGS="-arch ${ARCH} -miphoneos-version-min=${SDKVERSION} -isysroot ${SDK}"
+    CFLAGS="-arch ${ARCH} -miphoneos-version-min=${TARGETSDKVERSION} -isysroot ${SDK}"
     PREFIX="${CURRENTPATH}/build/${LIB}/${ARCH}"
 
     mkdir -p ${PREFIX}
