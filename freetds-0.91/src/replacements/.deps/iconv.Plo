@@ -1,3 +1,0 @@
-iconv.lo: iconv.c ../../include/config.h
-
-../../include/config.h:
