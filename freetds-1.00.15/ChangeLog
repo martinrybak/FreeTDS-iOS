@@ -1,0 +1,119 @@
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Thu Sep 1 22:41:52 2016 +0100
+
+    Update OpenSSL cipher list
+
+    This increase security and also fix a recent incompatibility
+    between OpenSSL and SChannel (SChannel versions patched in a
+    couple of months).
+
+Author: John Kendall <john@capps.com>
+Date:   Thu Aug 25 12:09:50 2016 +0100
+
+    Handle correctly long object in defncopy for ASE servers
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Fri Jul 22 10:27:08 2016 +0100
+
+    Remove some string overflows from VMS code
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Fri Jul 22 10:29:19 2016 +0100
+
+    pool: Avoid to overwrite packet if not entirely written
+
+    This can happen if packet is not entirely written to server after
+    being read from client.
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Mon Jul 18 12:09:07 2016 +0100
+
+    Extends cs_dt_crack to support newer types
+
+    This add a new cs_dt_crack_v2 ABI function (cs_dt_crack API is redirected
+    to it using a preprocessor macro). This to make the extension of
+    CS_DATEREC more safe (version of 1.0 could call cs_dt_crack with
+    CS_BIGDATETIME_TYPE/CS_BIGTIME_TYPE without having these fields written
+    which would possible cause memory corruption on version compiled with
+    these fields missing).
+    This make sqsh compile and work with newer date/time types.
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Mon Jul 18 09:38:13 2016 +0100
+
+    Make AppVeyor build with OpenSSL enabled
+
+    CMake was not finding OpenSSL.
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Mon Jun 27 12:59:07 2016 +0100
+
+    Fix NUMERIC column for bcp native format
+
+    Prefix was not handled correctly.
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Sun Jun 26 11:23:15 2016 +0100
+
+    Fix freebcp -E (identity columns) output
+
+    An additional query prevented code to handle correctly column types.
+
+Author: Manfroi Fabrice <fm@4js.com>
+Date:   Wed Jun 22 16:33:53 2016 +0200
+
+    Fix build error on AIX 6.1 / 7.1 / 7.2
+
+    tls.c:719: error: 'AF_INET6' undeclared (first use in this function)
+    tls.c:719: error: (Each undeclared identifier is reported only once
+    tls.c:719: error: for each function it appears in.)
+    tls.c:722: error: 'AF_INET' undeclared (first use in this function)
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Sat Jun 18 21:08:17 2016 +0100
+
+    Fix internal result state in dbcanquery
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Sat Jun 18 13:27:56 2016 +0100
+
+    Avoid to strip spaces from procedure text.
+
+    NTBSTRINGBIND strip spaces at the end.
+    Using STRINGBIND with 0 size cause string to be just NUL terminated.
+    The 0 would lead to a possible overflow however we check the column
+    len before doing the bind to avoid such possibility.
+
+    Original patch from Nem W Schlecht.
+
+Author: Nem W Schlecht <nem@emptec.com>
+Date:   Fri Jun 17 22:38:12 2016 +0100
+
+    Avoid crash on connection error and report an error instead
+
+    Patch from Nem W Schlecht.
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Sun Jun 12 21:09:43 2016 +0100
+
+    allows to specify 5.0 as tds protocol version during configure
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Sat Jun 11 09:32:43 2016 +0100
+
+    do not compile as bundle under Mac OS X is --with-odbc-nodm is specified
+
+    In this case the driver will be used as a dynamic library (not loaded
+    dynamically) so compile as such.
+    In case a DM is used unit tests/application will link to the DM which
+    will load the driver (requiring to be a module on old Mac OS X versions).
+
+Author: Frediano Ziglio <freddy77@gmail.com>
+Date:   Fri Jun 10 11:45:44 2016 +0100
+
+    replace BYTE with unsigned char in ODBC files
+
+    BYTE is not supported on some platforms.
+    This fixes Mac OS X build.
+    unixODBC headers files and Windows platform define it.
+
