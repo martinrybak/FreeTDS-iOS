@@ -6,7 +6,7 @@ OSX_SDKVERSION="10.12"
 LIB="freetds"
 
 DEVELOPER=`xcode-select -print-path`
-IOS_ARCHS="i386 x86_64 armv7 armv7s arm64"
+IOS_ARCHS="i386 armv7 armv7s arm64"
 OSX_ARCHS="i386 x86_64"
 CURRENTPATH=`pwd`
 BUILD="x86_64-apple-darwin11"
@@ -35,7 +35,7 @@ do
 
     SDK="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${IOS_SDKVERSION}.sdk"
     export CC="clang"
-    export CFLAGS="-arch ${ARCH} -isysroot ${SDK} -miphoneos-version-min=6.0"
+    export CFLAGS="-arch ${ARCH} -isysroot ${SDK} -miphoneos-version-min=7.0"
     export CXXFLAGS="$CFLAGS"
     export LDFLAGS="$CFLAGS"
     export LD=$CC
@@ -57,15 +57,13 @@ do
 
 done
 
-exit 1
-
 echo "== We just need static library == "
 echo "== Copy headers to fat folder from i386 folder AND clean files in lib =="
-cp -r ${CURRENTPATH}/build_ios/${LIB}/i386/ ${CURRENTPATH}/build/${LIB}/Fat
+cp -r ${CURRENTPATH}/build_ios/${LIB}/i386/ ${CURRENTPATH}/build_ios/${LIB}/Fat
 rm -rf ${CURRENTPATH}/build_ios/${LIB}/Fat/lib/*
 
 echo "Build library - libsybdb.a"
-lipo -create ${CURRENTPATH}/build_ios/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/armv7s/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/arm64/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/x86_64/lib/libsybdb.a  -output ${CURRENTPATH}/build_ios/${LIB}/Fat/lib/libsybdb.a
+lipo -create ${CURRENTPATH}/build_ios/${LIB}/i386/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/armv7/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/armv7s/lib/libsybdb.a  ${CURRENTPATH}/build_ios/${LIB}/arm64/lib/libsybdb.a  -output ${CURRENTPATH}/build_ios/${LIB}/Fat/lib/libsybdb.a
 
 echo "======== CHECK FAT ARCH ========"
 xcrun -sdk iphoneos lipo -info ${CURRENTPATH}/build_ios/${LIB}/Fat/lib/libsybdb.a
